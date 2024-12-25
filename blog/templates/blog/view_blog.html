@@ -1,0 +1,57 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+  {{ blog.title }}
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.0.0/ckeditor5.css" />
+{% endblock %}
+
+{% block header %}
+  {% include 'blog/_partials/_header.html' %}
+{% endblock %}
+
+{% block body %}
+  <main class="container flex-fill">
+    <div>
+      <div class="d-flex justify-content-between">
+        <h1>{{ blog.title }}</h1>
+        {% if request.user.is_staff %}
+        <div>
+          <a href="{% url 'blog:edit-post' id=blog.id %}" class="btn btn-sm btn-outline-primary">update</a>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_modal">delete</button>
+          <!-- Modal -->
+          <div class="modal fade" id="delete_modal" tabindex="-1" aria-labelledby="delete_modal" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <p class="modal-title fs-5" id="delete_modal">are you sure you want to delete?</p>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-end gap-3">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <a href="{% url 'blog:delete-post' id=blog.id %}" type="button" class="btn btn-danger">delete</a>
+                </div>
+                {% comment %} <div class="modal-footer"></div> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <small>last updated: {{ blog.last_update }}</small>
+    </div>
+    <div class="my-2">
+      <p>{{ blog.description }}</p>
+    </div>
+    <div class="my-5 ck-content">
+      <p>{{ blog.content|safe }}</p>
+    </div>
+  </main>
+{% endblock %}
+
+{% block footer %}
+  {% include 'blog/_partials/_footer.html' %}
+{% endblock %}

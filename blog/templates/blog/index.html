@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+  Blog
+{% endblock %}
+
+{% block header %}
+  {% include 'blog/_partials/_header.html' %}
+{% endblock %}
+
+{% block body %}
+  <main class="container flex-fill mb-5">
+    <div class="ps-3 my-4 border-3 border-bottom col-3">
+      <h3>Latest Post</h3>
+    </div>
+    {% for blog in blogs %}
+    <div class="d-flex position-relative my-4" id="blog-post">
+        <div id="blog-thumbnail">
+          <img class="border rounded-5" src="{{ blog.thumbnail.url }}" alt="" style="max-width: 540px; max-height: 540px;" />
+        </div>
+        <div class="p-3 d-flex flex-column justify-content-between" id="blog-instance">
+          <div>
+            <div id="blog-title">
+              <h5 class="">{{blog.title}}</h5>
+            </div>
+            <div id="blog-content">
+              <p>{{blog.description|truncatewords:50}}</p>
+            </div>
+            <div>
+              <a href="{% url 'blog:view-blog' blog.id %}" class="btn btn-outline-light btn-sm">read more</a>
+            </div>
+          </div>
+          <div>
+            <p>
+              <small class="text-muted">Last updated: {{blog.last_update}}</small>
+            </p>
+          </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No post added yet.</p>
+    {% endfor %}
+  </main>
+{% endblock %}
+
+{% block footer %}
+  {% include 'blog/_partials/_footer.html' %}
+{% endblock %}
